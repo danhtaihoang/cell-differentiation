@@ -1,0 +1,20 @@
+#!/bin/sh
+
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 14
+set autoscale
+set key right top
+set pointsize 1
+set xlabel "nA"
+set ylabel "FnA"
+set output "FnA-nA.ps"
+set title "FnA in nA "
+plot "average_thermal.dat" u 2:4 t "FnA nA" w p lt -1 pt 7
+EOF
+
+
+
+
+
+
+

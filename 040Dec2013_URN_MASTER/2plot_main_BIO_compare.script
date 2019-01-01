@@ -1,0 +1,137 @@
+#!/bin/sh
+
+#=========================================================================================
+# Loai bo, chi lay tu cot 31 den cot 35 cua file parameter.in
+cut -c31-35 1parameter.in > parameter_file_giantiep.dat
+
+# Doc gia tri dua vao so dong
+i=1
+while [ $i -le 30 ]
+do
+read value
+
+if [ $i -eq 3 ]
+then
+na0=$value
+fi
+
+if [ $i -eq 4 ]
+then
+nb0=$value
+fi
+
+if [ $i -eq 7 ]
+then
+Pa=$value
+fi
+
+if [ $i -eq 8 ]
+then
+Pb=$value
+fi
+
+if [ $i -eq 9 ]
+then
+Pab=$value
+fi
+
+if [ $i -eq 10 ]
+then
+Pba=$value
+fi
+
+i=$(echo "scale=0; $i+1" | bc)
+done < parameter_file_giantiep.dat
+
+rm parameter_file_giantiep.dat
+
+echo "NA0 = " $na0
+echo "NB0 = " $nb0
+echo "Pa: " $Pa
+echo "Pb: " $Pb
+echo "Pab: " $Pab
+echo "Pba: " $Pba
+# =============================================================================================
+# =============================================================================================
+# GAN CAC DAI LUONG CAN VE DO THI
+# =============================================================================================
+# =============================================================================================
+
+for i in 1 2 3 4 5 6 7 8
+do
+
+# Gan cac bien cua Paa
+if [ $i -eq 1 ]
+then
+name_y="NA"
+number_culomn=2
+fi
+
+# Gan cac bien cua Paa
+if [ $i -eq 2 ]
+then
+name_y="NB"
+number_culomn=3
+fi
+
+if [ $i -eq 3 ]
+then
+name_y="FnA"
+number_culomn=4
+fi
+
+if [ $i -eq 4 ]
+then
+name_y="FnB"
+number_culomn=5
+fi
+
+if [ $i -eq 5 ]
+then
+name_y="FnA+B"
+number_culomn=6
+fi
+
+if [ $i -eq 6 ]
+then
+name_y="FnA-B"
+number_culomn=7
+fi
+
+if [ $i -eq 7 ]
+then
+name_y="nA+B"
+number_culomn=8
+fi
+
+if [ $i -eq 8 ]
+then
+name_y="nA-B"
+number_culomn=9
+fi
+
+file_average_dat1="average_thermal_200_100_0.1_0.02.dat"
+file_average_dat2="average_thermal_200_100_0.1_0.05.dat"
+# =============================================================================================
+# =============================================================================================
+# VE DO THI
+# =============================================================================================
+# =============================================================================================
+
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 14
+set autoscale
+set key right top
+set pointsize 1
+set xlabel "time"
+set ylabel "$name_y"
+set output "Effect Pab $name_y .eps"
+set title "$na0 x$nb0 ; Pa= $Pa; Pb= $Pb ; Pab= $Pab ; Pba= $Pba "
+plot "$file_average_dat1" u 1:$number_culomn t "Pab=0.02" w p lt -1 pt 7,\
+"$file_average_dat2" u 1:$number_culomn t "Pab=0.05" w p lt 1 pt 63
+
+EOF
+
+done
+
+

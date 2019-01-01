@@ -1,0 +1,22 @@
+#!/bin/sh
+
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 14
+set autoscale
+set key right top
+set pointsize 1
+set xlabel "time"
+set ylabel "NA"
+set output "NA compare.ps"
+set title "compare "
+plot "average_thermal_300_100_0.1_0.02.txt" u 1:2 t "0.02" w p lt -1 pt 7,\
+"average_thermal_300_100_0.1_0.05.txt" u 1:2 t "0.05" w p lt 1 pt 63,\
+"average_thermal_300_100_0.1_0.2.txt" u 1:2 t "0.2" w p lt 3 pt 65
+EOF
+
+
+
+
+
+
+
